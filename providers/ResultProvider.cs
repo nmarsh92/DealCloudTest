@@ -40,7 +40,7 @@ namespace DealCloudTest.providers
       {
          var parsed = JObject.Parse(contentString);
          var daily = parsed["Time Series (Daily)"];
-         List<string> dateKeys = GetKeys(contentString, days, daily);
+         List<string> dateKeys = GetKeys(days);
          float total = 0;
          foreach (var key in dateKeys)
          {
@@ -56,7 +56,7 @@ namespace DealCloudTest.providers
            
          }
 
-         return total > 0 ? total / 7 : 0;
+         return total > 0 ? total / days : 0;
       }
 
       public float CalculateHighest(string contentString, int months)
@@ -83,7 +83,7 @@ namespace DealCloudTest.providers
          }
          return highest;
       }
-      public List<string> GetKeys(string contentString, int days, JToken daily)
+      public List<string> GetKeys(int days)
       {
 
 
