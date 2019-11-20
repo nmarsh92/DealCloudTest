@@ -24,7 +24,7 @@ namespace DealCloudTest.providers
       {
          HttpResponseMessage response = await client.GetAsync("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&apikey="+ this.apiKey);
          string contentString = await response.Content.ReadAsStringAsync();
-         // List<Price> prices = GetPrices(contentString);
+
          return CalculateAverage(contentString, days);
       }
 
@@ -32,11 +32,11 @@ namespace DealCloudTest.providers
       {
          HttpResponseMessage response = await client.GetAsync("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=" + symbol + "&apikey=" + this.apiKey);
          string contentString = await response.Content.ReadAsStringAsync();
-         // List<Price> prices = GetPrices(contentString);
+
          return CalculateHighest(contentString, months);
       }
 
-      public float CalculateAverage(string contentString, int days)
+      private float CalculateAverage(string contentString, int days)
       {
          var parsed = JObject.Parse(contentString);
          var daily = parsed["Time Series (Daily)"];
@@ -52,14 +52,12 @@ namespace DealCloudTest.providers
                   total += val;
                }
             }
-          
-           
          }
 
          return total > 0 ? total / days : 0;
       }
 
-      public float CalculateHighest(string contentString, int months)
+      private float CalculateHighest(string contentString, int months)
       {
          var parsed = JObject.Parse(contentString);
          var monthly = parsed["Monthly Time Series"];
@@ -81,9 +79,10 @@ namespace DealCloudTest.providers
                break;
             }
          }
+
          return highest;
       }
-      public List<string> GetKeys(int days)
+      private List<string> GetKeys(int days)
       {
 
 
